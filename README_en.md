@@ -1,4 +1,4 @@
-# RxBroadcasterThe
+# RxBroadcaster
 
 ## use of RxJava to achieve Broadcaster 
 Due to the performance of the broadcast itself, so we have been using a program is to send V4 packet LocalBroadcastManger to send the broadcast, which uses handler to achieve, the performance is very high.
