@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.androidyuan.rxbus.RxBroadCastManager;
+
+import com.androidyuan.rxbus.RxLocalBroadCastManager;
 import com.androidyuan.rxbus.component.RxBroadCastReceiver;
 import com.androidyuan.rxbus.component.RxBroadCastReceiverBackground;
 import com.androidyuan.rxbus.component.RxOnReceive;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements RxOnReceive {
         broadCastReceiverback.commit();
         broadCastReceiverback.commit();
 
-        RxBroadCastManager.getInstance().post("testthread", "scream");
+        RxLocalBroadCastManager.getInstance().sendBroadcast("testthread", "scream");
+
 
     }
 
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements RxOnReceive {
     @Override
     public void call(Object o) {
 
-        Log.d("RxBroadCastManager send:", "" + o + " ,onReceive is MainThraed=" + isMainTread());
+        Log.d("RxLocalBroadCastManager send:",
+                "" + o + " ,onReceive is MainThraed=" + isMainTread());
     }
 
     private boolean isMainTread() {

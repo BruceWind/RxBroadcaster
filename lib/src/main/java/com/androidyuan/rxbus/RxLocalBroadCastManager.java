@@ -3,39 +3,41 @@ package com.androidyuan.rxbus;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
+
 import com.androidyuan.rxbus.component.RxBroadCastReceiver;
-import rx.Observable;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by wei on 16-9-10.
  * <p>
  * 高度模拟 LocalBroadCastManager 的用法 同时解决LocalBroadcast多次注册带来的bug
  */
-public class RxBroadCastManager {
+public class RxLocalBroadCastManager {
 
-    private static RxBroadCastManager instance;
+    private static RxLocalBroadCastManager instance;
 
     //use SparseArray,because is high performance
     SparseArray<List<RxBroadCastReceiver>> mSparseArrOnBroadCastReveive;
     CompositeSubscription mCompositeSubscription;
 
-    private RxBroadCastManager() {
+    private RxLocalBroadCastManager() {
 
         mSparseArrOnBroadCastReveive = new SparseArray<>();
         mCompositeSubscription = new CompositeSubscription();
     }
 
 
-    public static RxBroadCastManager getInstance() {
+    public static RxLocalBroadCastManager getInstance() {
 
         if (instance == null) {
-            instance = new RxBroadCastManager();
+            instance = new RxLocalBroadCastManager();
         }
         return instance;
     }
@@ -93,7 +95,7 @@ public class RxBroadCastManager {
      * @param filter
      * @param obj
      */
-    public void post(String filter, Object obj) {
+    public void sendBroadcast(String filter, Object obj) {
 
         if (TextUtils.isEmpty(filter) || obj == null)
             return;

@@ -1,8 +1,10 @@
 package com.androidyuan.rxbus.component;
 
 import android.content.IntentFilter;
-import com.androidyuan.rxbus.RxBroadCastManager;
+
+import com.androidyuan.rxbus.RxLocalBroadCastManager;
 import com.androidyuan.rxbus.exception.REventIsNullException;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,12 +70,12 @@ public class RxBroadCastReceiver {
 
     public void commit() {
 
-        RxBroadCastManager.getInstance().registerReceiver(this, filter);
+        RxLocalBroadCastManager.getInstance().registerReceiver(this, filter);
     }
 
     public void unRegister() {
 
-        RxBroadCastManager.getInstance().unregisterReceiver(this);
+        RxLocalBroadCastManager.getInstance().unregisterReceiver(this);
     }
 
 
