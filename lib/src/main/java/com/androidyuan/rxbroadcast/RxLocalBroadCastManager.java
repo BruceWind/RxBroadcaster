@@ -1,10 +1,10 @@
-package com.androidyuan.rxbus;
+package com.androidyuan.rxbroadcast;
 
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.androidyuan.rxbus.component.RxBroadCastReceiver;
+import com.androidyuan.rxbroadcast.component.RxBroadCastReceiver;
 
 import java.util.ArrayList;
 import java.util.Iterator;

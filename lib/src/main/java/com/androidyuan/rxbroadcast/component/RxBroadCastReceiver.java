@@ -1,9 +1,9 @@
-package com.androidyuan.rxbus.component;
+package com.androidyuan.rxbroadcast.component;
 
 import android.content.IntentFilter;
 
-import com.androidyuan.rxbus.RxLocalBroadCastManager;
-import com.androidyuan.rxbus.exception.REventIsNullException;
+import com.androidyuan.rxbroadcast.RxLocalBroadCastManager;
+import com.androidyuan.rxbroadcast.exception.REventIsNullException;
 
 import rx.Observable;
 import rx.Subscription;

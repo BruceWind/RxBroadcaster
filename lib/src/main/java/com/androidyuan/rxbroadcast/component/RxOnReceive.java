@@ -1,4 +1,4 @@
-package com.androidyuan.rxbus.component;
+package com.androidyuan.rxbroadcast.component;
 
 import rx.functions.Action1;
 

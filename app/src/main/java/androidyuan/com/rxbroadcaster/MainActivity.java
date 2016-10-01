@@ -6,10 +6,10 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.androidyuan.rxbus.RxLocalBroadCastManager;
-import com.androidyuan.rxbus.component.RxBroadCastReceiver;
-import com.androidyuan.rxbus.component.RxBroadCastReceiverBackground;
-import com.androidyuan.rxbus.component.RxOnReceive;
+import com.androidyuan.rxbroadcast.RxLocalBroadCastManager;
+import com.androidyuan.rxbroadcast.component.RxBroadCastReceiver;
+import com.androidyuan.rxbroadcast.component.RxBroadCastReceiverBackground;
+import com.androidyuan.rxbroadcast.component.RxOnReceive;
 
 public class MainActivity extends AppCompatActivity implements RxOnReceive {
 

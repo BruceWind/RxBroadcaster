@@ -1,4 +1,4 @@
-package com.androidyuan.rxbus.exception;
+package com.androidyuan.rxbroadcast.exception;
 
 /**
  * Created by wei on 16/9/19.

@@ -1,4 +1,4 @@
-package com.androidyuan.rxbus.component;
+package com.androidyuan.rxbroadcast.component;
 
 /**
  * Created by wei on 16/9/19.
