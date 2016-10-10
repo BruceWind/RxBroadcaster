@@ -8,36 +8,29 @@
 
 ## 使用
 ```
-MainActivity extends AppCompatActivity implements RxOnReceive {
+MainActivity extends AppCompatActivity  {
 
-    RxBroadCastReceiver broadCastReceiverAsync = new RxBroadCastReceiver(this);
-    RxBroadCastReceiver broadCastReceiverback = new RxBroadCastReceiverBackground(this);
+    RxBroadcastReceiver broadcastReceiverAsync = new RxBroadcastReceiver(){
+
+        @SuppressLint("LongLogTag")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Log.d("RxLocalBroadcastManager send:", intent.getAction()+ " ,onReceive is MainThraed=" + isMainTread());
+        }
+    };
     
         @Override
         protected void onCreate(Bundle savedInstanceState) {
     
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-    
-            broadCastReceiverAsync.putFilter("testthread");
-            broadCastReceiverAsync.commit();
-    
-            broadCastReceiverback.putFilter("testthread");//注册到相同的filter
-            broadCastReceiverback.commit();
-            //the test repeated registration.
-            broadCastReceiverback.commit();//多次注册 只会生效一次
-            broadCastReceiverback.commit();
-            broadCastReceiverback.commit();
-    
-            RxBroadCastManager.getInstance().sendBroadcast("testthread", "scream");//sendBroadcast "testthread" 
-    
+
+            IntentFilter filters=new IntentFilter();
+            filters.addAction("testthread");
+            RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverAsync,filters);
+            
         }
-        
-        @Override
-        public void call(Object o) {
-        
-            Log.d("RxBroadCastManager send:", "" + o + " ,onReceive is MainThraed=" + isMainTread());
-        }
+
 
 ...
 ...
@@ -46,8 +39,8 @@ MainActivity extends AppCompatActivity implements RxOnReceive {
     
 //log如下 ：
 
-RxBroadCastManager send:: scream ,onReceive is MainThraed=true
-RxBroadCastManager send:: scream ,onReceive is MainThraed=false
+RxBroadCastManager send:: testthread ,onReceive is MainThraed=true
+RxBroadCastManager send:: testthread ,onReceive is MainThraed=false
 
 
 ```
