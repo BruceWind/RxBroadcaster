@@ -8,29 +8,29 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.androidyuan.rxbroadcast.RxLocalBroadCastManager;
-import com.androidyuan.rxbroadcast.component.RxBroadCastReceiver;
-import com.androidyuan.rxbroadcast.component.RxBroadCastReceiverBackground;
+import com.androidyuan.rxbroadcast.RxLocalBroadcastManager;
+import com.androidyuan.rxbroadcast.component.RxBroadcastReceiver;
+import com.androidyuan.rxbroadcast.component.RxBroadcastReceiverBackground;
 
 public class MainActivity extends AppCompatActivity {
 
-    RxBroadCastReceiver broadCastReceiverAsync = new RxBroadCastReceiver(){
+    RxBroadcastReceiver broadcastReceiverAsync = new RxBroadcastReceiver(){
 
         @SuppressLint("LongLogTag")
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.d("RxLocalBroadCastManager send:", intent.getAction()+ " ,onReceive is MainThraed=" + isMainTread());
+            Log.d("RxLocalBroadcastManager send:", intent.getAction()+ " ,onReceive is MainThraed=" + isMainTread());
         }
     };
 
-    RxBroadCastReceiver broadCastReceiverback = new RxBroadCastReceiverBackground() {
+    RxBroadcastReceiver broadcastReceiverback = new RxBroadcastReceiverBackground() {
         @Override
         public void onReceive(Context context, Intent intent) {
             /**
              * 测试发现 多次 commit 都没有收到多条 解决 使用　LocalBroadCastManager　时带来的问题
              */
-            Log.d("RxLocalBroadCastManager send:", intent.getAction() + " ,onReceive is MainThraed=" + isMainTread());
+            Log.d("RxLocalBroadcastManager send:", intent.getAction() + " ,onReceive is MainThraed=" + isMainTread());
         }
     };
 
@@ -44,14 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         filters.addAction("testthread");
 
-        RxLocalBroadCastManager.getInstance(this).registerReceiver(broadCastReceiverAsync,filters);
+        RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverAsync,filters);
         //testing multiple test registration.
-        RxLocalBroadCastManager.getInstance(this).registerReceiver(broadCastReceiverback,filters);
-        RxLocalBroadCastManager.getInstance(this).registerReceiver(broadCastReceiverback,filters);
-        RxLocalBroadCastManager.getInstance(this).registerReceiver(broadCastReceiverback,filters);
-        RxLocalBroadCastManager.getInstance(this).registerReceiver(broadCastReceiverback,filters);
+        RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverback,filters);
+        RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverback,filters);
+        RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverback,filters);
+        RxLocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverback,filters);
 
-        RxLocalBroadCastManager.getInstance(this).sendBroadcast(new Intent("testthread"));
+        RxLocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("testthread"));
     }
 
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
 
-        RxLocalBroadCastManager.getInstance(this).unregisterReceiver(broadCastReceiverAsync);
-        RxLocalBroadCastManager.getInstance(this).unregisterReceiver(broadCastReceiverback);
+        RxLocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiverAsync);
+        RxLocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiverback);
     }
 }

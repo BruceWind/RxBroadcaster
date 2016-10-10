@@ -3,9 +3,7 @@ package com.androidyuan.rxbroadcast.component;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
-import com.androidyuan.rxbroadcast.RxLocalBroadCastManager;
 import com.androidyuan.rxbroadcast.exception.REventIsNullException;
 
 import rx.Observable;
@@ -20,7 +18,7 @@ import rx.schedulers.Schedulers;
  * <p>
  * 这是个最基础recevier 没有线程切换的功能  发送的时候在哪个线程接受就在哪个线程
  */
-public abstract class RxBroadCastReceiver extends BroadcastReceiver {
+public abstract class RxBroadcastReceiver extends BroadcastReceiver {
 
     //用这个字段方便对这个类，也可以自由切换的功能
     private int mThreadMode=0;
@@ -30,12 +28,12 @@ public abstract class RxBroadCastReceiver extends BroadcastReceiver {
     private Context mAppContext;
 
 
-    public RxBroadCastReceiver() {
+    public RxBroadcastReceiver() {
 
         initData();
     }
 
-    public RxBroadCastReceiver(int tMode) {
+    public RxBroadcastReceiver(int tMode) {
 
         mThreadMode=tMode;
         initData();
