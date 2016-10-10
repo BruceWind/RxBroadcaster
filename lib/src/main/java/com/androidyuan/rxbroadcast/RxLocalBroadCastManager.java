@@ -1,5 +1,7 @@
 package com.androidyuan.rxbroadcast;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -23,21 +25,23 @@ public class RxLocalBroadCastManager {
 
     private static RxLocalBroadCastManager instance;
 
-    //use SparseArray,because is high performance
+    private final Context mAppContext;
+
+
     SparseArray<List<RxBroadCastReceiver>> mSparseArrOnBroadCastReveive;
     CompositeSubscription mCompositeSubscription;
 
-    private RxLocalBroadCastManager() {
+    private RxLocalBroadCastManager(Context context) {
 
+        this.mAppContext=context.getApplicationContext();
         mSparseArrOnBroadCastReveive = new SparseArray<>();
         mCompositeSubscription = new CompositeSubscription();
     }
 
-
-    public static RxLocalBroadCastManager getInstance() {
+    public static   RxLocalBroadCastManager getInstance(Context context) {
 
         if (instance == null) {
-            instance = new RxLocalBroadCastManager();
+            instance = new RxLocalBroadCastManager(context);
         }
         return instance;
     }
@@ -60,6 +64,7 @@ public class RxLocalBroadCastManager {
                 mSparseArrOnBroadCastReveive.put(filter.hashCode(), list);
             }
         }
+
     }
 
 
@@ -92,12 +97,17 @@ public class RxLocalBroadCastManager {
      * 不带线程切换 功能
      * action的触发会在发送的observable所在线程线程执行
      *
-     * @param filter
-     * @param obj
+     * @param intent
      */
-    public void sendBroadcast(String filter, Object obj) {
+    public void sendBroadcast(Intent intent) {
 
-        if (TextUtils.isEmpty(filter) || obj == null)
+        if(intent==null)
+            return;
+
+
+        String filter=intent.getAction();
+
+        if (TextUtils.isEmpty(filter))
             return;
 
         if (isHaveKey(filter)) {//设计的 就像  广播一样 发送出来 如果没有人接受 就丢弃了
@@ -106,7 +116,7 @@ public class RxLocalBroadCastManager {
 
             for (RxBroadCastReceiver onEv : list) {
 
-                Subscription sbus = onEv.send(Observable.just(obj));
+                Subscription sbus = onEv.send(mAppContext,Observable.just(intent));
 
                 // Log.d("on send ,isUnsubscribed", sbus.isUnsubscribed() + "");
             }

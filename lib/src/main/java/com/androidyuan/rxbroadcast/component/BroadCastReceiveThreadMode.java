@@ -3,7 +3,7 @@ package com.androidyuan.rxbroadcast.component;
 /**
  * Created by wei on 16/9/19.
  */
-public class BroadCastReceiveThreadModel {
+public class BroadCastReceiveThreadMode {
 
 
     public static final int THREAD_IMMEDIATE = 0;

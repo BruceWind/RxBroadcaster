@@ -1,5 +1,8 @@
 package com.androidyuan.rxbroadcast.component;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.androidyuan.rxbroadcast.RxLocalBroadCastManager;
@@ -17,17 +20,37 @@ import rx.schedulers.Schedulers;
  * <p>
  * 这是个最基础recevier 没有线程切换的功能  发送的时候在哪个线程接受就在哪个线程
  */
-public class RxBroadCastReceiver {
+public abstract class RxBroadCastReceiver extends BroadcastReceiver {
 
-    IntentFilter filter;
+    //用这个字段方便对这个类，也可以自由切换的功能
+    private int mThreadMode=0;
+
     RxOnReceive mEvent;
 
-    public RxBroadCastReceiver(RxOnReceive onEv) {
+    private Context mAppContext;
 
-        filter = new IntentFilter();
 
-        mEvent = onEv;
+    public RxBroadCastReceiver() {
+
+        initData();
     }
+
+    public RxBroadCastReceiver(int tMode) {
+
+        mThreadMode=tMode;
+        initData();
+    }
+
+    private void initData()
+    {
+        mEvent = new RxOnReceive() {
+            @Override
+            public void call(Intent o) {
+                onReceive(mAppContext, o);
+            }
+        };
+    }
+
 
     /**
      * onEvent执行时所在的线程
@@ -36,25 +59,26 @@ public class RxBroadCastReceiver {
      */
     protected int getThreadMode() {
 
-        return BroadCastReceiveThreadModel.THREAD_IMMEDIATE;
+        return mThreadMode==0?BroadCastReceiveThreadMode.THREAD_IMMEDIATE:mThreadMode;
     }
 
-    public Subscription send(Observable obs) {
+    public Subscription send(Context context,Observable obs) {
+        mAppContext=context;
 
         if (mEvent == null)//抛出异常
             throw new REventIsNullException();
 
         switch (getThreadMode()) {
-            case BroadCastReceiveThreadModel.THREAD_ASYNC: {
+            case BroadCastReceiveThreadMode.THREAD_ASYNC: {
                 return obs.observeOn(Schedulers.newThread()).subscribe(mEvent);
             }
-            case BroadCastReceiveThreadModel.THREAD_IO: {
+            case BroadCastReceiveThreadMode.THREAD_IO: {
                 return obs.observeOn(Schedulers.io()).subscribe(mEvent);
             }
-            case BroadCastReceiveThreadModel.THREAD_MAINTHREAD: {
+            case BroadCastReceiveThreadMode.THREAD_MAINTHREAD: {
                 return obs.observeOn(AndroidSchedulers.mainThread()).subscribe(mEvent);
             }
-            case BroadCastReceiveThreadModel.THREAD_COMPUTION: {
+            case BroadCastReceiveThreadMode.THREAD_COMPUTION: {
                 return obs.observeOn(Schedulers.computation()).subscribe(mEvent);
             }
             default:
@@ -62,21 +86,6 @@ public class RxBroadCastReceiver {
         }
     }
 
-
-    public void putFilter(String action) {
-
-        filter.addAction(action);
-    }
-
-    public void commit() {
-
-        RxLocalBroadCastManager.getInstance().registerReceiver(this, filter);
-    }
-
-    public void unRegister() {
-
-        RxLocalBroadCastManager.getInstance().unregisterReceiver(this);
-    }
 
 
 }

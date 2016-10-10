@@ -4,16 +4,11 @@ package com.androidyuan.rxbroadcast.component;
  * Created by wei on 16/9/19.
  * this is use io thread
  */
-public class RxBroadCastReceiverIO extends RxBroadCastReceiver {
-
-    public RxBroadCastReceiverIO(RxOnReceive onEv) {
-
-        super(onEv);
-    }
+public abstract class RxBroadCastReceiverIO extends RxBroadCastReceiver {
 
     @Override
     protected int getThreadMode() {
 
-        return BroadCastReceiveThreadModel.THREAD_IO;
+        return BroadCastReceiveThreadMode.THREAD_IO;
     }
 }
